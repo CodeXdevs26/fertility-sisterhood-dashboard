@@ -12,6 +12,7 @@ import AErrorMessage from "@/components/AErrorMessage";
 import { useGetContentsQuery, useUpdateContentMutation } from "@/redux/api/contentApi";
 import handleMutation from "@/utils/handleMutation";
 import { TLegal } from "@/interface/legal.interface";
+import ContactSettingsForm from "./ContactSettingsForm";
 
 type TContentKey = "aboutUs" | "termsCondition" | "privacyPolicy";
 type TContents = Record<TContentKey, string>;
@@ -30,7 +31,7 @@ const isEmptyHtml = (html: string) =>
   html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim() === "";
 
 const SettingsTabsEditor = () => {
-  const [activeTab, setActiveTab] = useState<TContentKey>("aboutUs");
+  const [activeTab, setActiveTab] = useState<TContentKey | "contact">("aboutUs");
   const [contents, setContents] = useState<TContents>(emptyContents);
   const [savingTab, setSavingTab] = useState<TContentKey | null>(null);
 
@@ -97,11 +98,11 @@ const SettingsTabsEditor = () => {
       <div className="flex-1">
         <Tabs
           value={activeTab}
-          onValueChange={(value) => setActiveTab(value as TContentKey)}
+          onValueChange={(value) => setActiveTab(value as TContentKey | "contact")}
           className="flex flex-col"
         >
           {/* Tabs Header */}
-          <TabsList className="grid w-full grid-cols-3 bg-card mb-6 h-14">
+          <TabsList className="grid w-full grid-cols-4 bg-card mb-6 h-14">
             {sections.map((section) => (
               <TabsTrigger
                 key={section.id}
@@ -111,6 +112,12 @@ const SettingsTabsEditor = () => {
                 {section.title}
               </TabsTrigger>
             ))}
+            <TabsTrigger
+              value="contact"
+              className="data-[state=active]:bg-primary data-[state=active]:text-card"
+            >
+              Contact & Community
+            </TabsTrigger>
           </TabsList>
 
           {/* Tab Content */}
@@ -171,6 +178,9 @@ const SettingsTabsEditor = () => {
                 </div>
               </TabsContent>
             ))}
+            <TabsContent value="contact" className="mt-0">
+              <ContactSettingsForm />
+            </TabsContent>
           </div>
         </Tabs>
       </div>

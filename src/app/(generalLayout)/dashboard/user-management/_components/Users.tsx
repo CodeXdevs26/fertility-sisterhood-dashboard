@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { AFilterSelect } from "@/components/form/AFilterSelect";
-import { userTypeOptions } from "@/data/global.data";
+import { subscriptionTypeOptions, userTypeOptions } from "@/data/global.data";
 import { Input } from "@/components/ui/input";
 import { APagination } from "@/components/ui/APagination";
 import { UserCard } from "./UserCard";
@@ -14,6 +14,7 @@ import AErrorMessage from "@/components/AErrorMessage";
 
 const Users = () => {
   const [userType, setUserType] = useState<string>("all");
+  const [subscriptionType, setSubscriptionType] = useState<string>("all");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const limit = 10;
@@ -24,6 +25,7 @@ const Users = () => {
     limit,
     searchTerm,
     status: userType,
+    subscription: subscriptionType,
   });
   const users: TUser[] = data?.data?.auths || [];
   const meta: TMeta | undefined = data?.data?.meta;
@@ -51,6 +53,16 @@ const Users = () => {
           value={userType}
           options={userTypeOptions}
           className="w-[110px]!"
+        />
+        <AFilterSelect
+          onChange={(value) => {
+            setSubscriptionType(value);
+            setCurrentPage(1);
+          }}
+          placeholder={"plan"}
+          value={subscriptionType}
+          options={subscriptionTypeOptions}
+          className="w-[130px]!"
         />
       </div>
 

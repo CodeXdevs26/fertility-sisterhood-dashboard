@@ -18,7 +18,19 @@ export interface TUser {
   email: string
   role: TRole
   status: TUserStatus
+  // true when the subscription status is ACTIVE
+  isPremium: boolean
   createdAt: string
+}
+
+export type TAuthProvider = "EMAIL" | "GOOGLE" | "FACEBOOK";
+
+// consents the user gives in the app ("Your consent matters" screen)
+export interface TUserConsent {
+  healthData: boolean
+  healthDataUpdatedAt: string | null
+  marketing: boolean
+  cookies: boolean
 }
 
 export interface TUserSubscription {
@@ -29,6 +41,8 @@ export interface TUserSubscription {
 }
 
 export interface TUserDetails extends TUser {
+  provider: TAuthProvider
+  consent: TUserConsent | null
   subscription: TUserSubscription | null
 }
 
@@ -52,4 +66,8 @@ export interface TStats {
   activeUsers: number
   blockedUsers: number
   activeSubscribers: number
+  newUsersThisMonth: number
+  totalRevenue: number
+  revenueThisMonth: number
+  pendingSupports: number
 }

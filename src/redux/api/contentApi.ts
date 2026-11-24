@@ -16,8 +16,23 @@ const contentApi = baseApi.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ["content"]
+    }),
+    getAppSettings: builder.query({
+      query: () => ({
+        url: "/app-settings",
+        method: "GET",
+      }),
+      providesTags: ["appSettings"]
+    }),
+    updateAppSettings: builder.mutation({
+      query: (data) => ({
+        url: "/app-settings",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["appSettings"]
     })
   }),
 })
 
-export const { useGetContentsQuery, useUpdateContentMutation } = contentApi;
+export const { useGetContentsQuery, useUpdateContentMutation, useGetAppSettingsQuery, useUpdateAppSettingsMutation } = contentApi;

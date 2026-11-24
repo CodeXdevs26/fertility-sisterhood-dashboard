@@ -26,8 +26,13 @@ export function UserCard({ user }: { user: TUser }) {
           <p className="text-sm text-muted-foreground truncate">{user.email}</p>
         </div>
 
-        <div>
+        <div className="flex items-start gap-1.5">
           <StatusBadge status={user.status} />
+          {user.isPremium && (
+            <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-white">
+              Premium
+            </span>
+          )}
         </div>
       </button>
 

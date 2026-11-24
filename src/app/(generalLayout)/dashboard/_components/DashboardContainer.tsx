@@ -3,6 +3,7 @@ import AContainer from "@/components/AContainer";
 import PageTitle from "@/components/others/PageTitle";
 import TopStats from "./TopStats";
 import { UserOverview } from "./chart/UserOverview";
+import { EarningOverview } from "./chart/EarningOverview";
 import NewUsers from "./newUsers/NewUsers";
 
 const DashboardContainer = () => {
@@ -16,6 +17,7 @@ const DashboardContainer = () => {
         <div className="w-[62%]">
           <TopStats />
           <UserOverview />
+          <EarningOverview />
         </div>
         <div className="w-[38%] border-2 rounded-2xl p-4 py-6 h-fit">
           <NewUsers />

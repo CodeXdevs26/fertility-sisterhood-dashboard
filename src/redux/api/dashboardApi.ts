@@ -17,7 +17,15 @@ const dashboardApi = baseApi.injectEndpoints({
       }),
       providesTags: ["meta"]
     }),
+    getEarningOverview: builder.query({
+      query: (params) => ({
+        url: "/meta/earning-overview",
+        method: "GET",
+        params
+      }),
+      providesTags: ["meta"]
+    }),
   }),
 })
 
-export const { useGetStatsQuery, useGetUserOverviewQuery } = dashboardApi;
+export const { useGetStatsQuery, useGetUserOverviewQuery, useGetEarningOverviewQuery } = dashboardApi;

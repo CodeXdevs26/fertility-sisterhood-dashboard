@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Crown, Mail } from "lucide-react";
+import { Calendar, Crown, KeyRound, Mail, ShieldCheck } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -9,13 +9,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useGetSingleUserQuery } from "@/redux/api/userApi";
-import { TUserDetails } from "@/interface/user.interface";
+import { TAuthProvider, TUserDetails } from "@/interface/user.interface";
 import ASpinner from "@/components/ui/ASpinner";
 import AErrorMessage from "@/components/AErrorMessage";
 import UserAvatar from "@/components/others/UserAvatar";
 import StatusBadge from "@/components/others/StatusBadge";
 import UserStatusAction from "@/components/others/UserStatusAction";
 import { formatDate } from "@/utils/formatDate";
+
+const providerLabels: Record<TAuthProvider, string> = {
+  EMAIL: "email & password",
+  GOOGLE: "Google",
+  FACEBOOK: "Facebook",
+};
 
 interface UserDetailsModalProps {
   userId: string;
@@ -68,10 +74,41 @@ export function UserDetailsModal({ userId, open, onOpenChange }: UserDetailsModa
                       <Calendar className="h-4 w-4 shrink-0" />
                       <span>Joined {formatDate(user.createdAt)}</span>
                     </div>
+                    <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                      <KeyRound className="h-4 w-4 shrink-0" />
+                      <span>Signs in with {providerLabels[user.provider] ?? "email & password"}</span>
+                    </div>
                   </div>
                 </div>
               </div>
               <UserStatusAction userId={user.id} name={user.name} status={user.status} />
+            </div>
+
+            {/* Consent (given in the app's "Your consent matters" screen) */}
+            <div className="border-t border-border pt-5">
+              <div className="flex items-center gap-2 mb-4">
+                <ShieldCheck className="size-5 text-primary" />
+                <h3 className="font-semibold text-foreground">Consent</h3>
+              </div>
+              <dl className="grid grid-cols-3 gap-4 text-sm">
+                {[
+                  { label: "Health data", value: user.consent?.healthData },
+                  { label: "Marketing", value: user.consent?.marketing },
+                  { label: "Cookies", value: user.consent?.cookies },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <dt className="text-muted-foreground">{item.label}</dt>
+                    <dd className={`mt-1 font-medium ${item.value ? "text-green-600" : "text-muted-foreground"}`}>
+                      {item.value ? "Given" : "Not given"}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              {user.consent?.healthDataUpdatedAt && (
+                <p className="mt-3 text-xs text-muted-foreground">
+                  Health data consent last changed {formatDate(user.consent.healthDataUpdatedAt)}
+                </p>
+              )}
             </div>
 
             {/* Subscription */}
